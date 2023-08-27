@@ -1,0 +1,33 @@
+server:
+  servlet:
+    context-path: /
+  port: 9080
+  compression:
+    mime-types:
+      - application/json
+
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  datasource:
+    url: jdbc:postgresql://localhost:5433/cafe
+    username: cafe
+    password: cafe
+    continue-on-error: true
+
+  application:
+    name: cafe-ms
+  jpa:
+    open-in-view: false
+    show-sql: true
+    format-sql: true
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate:
+        jdbc:
+          batch_size: 50
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/changelog-local.xml

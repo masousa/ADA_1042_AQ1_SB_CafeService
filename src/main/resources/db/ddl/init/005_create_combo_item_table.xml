@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet id="init_create_table_combo_item" author="matheus">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="combo_item" />
+            </not>
+        </preConditions>
+
+        <createTable tableName="combo_item">
+            <column name="id_combo" type="int2" >
+                <constraints nullable="false"
+                             foreignKeyName="fk_ci_combo" referencedTableName="combo"
+                             referencedColumnNames="id" />
+
+            </column>
+
+            <column name="id_item" type="int2">
+                <constraints  nullable="false"
+                             foreignKeyName="fk_citem_item" referencedTableName="item"
+                             referencedColumnNames="id" />
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="init_create_constraint_combo_item_composite_pk" author="matheus">
+        <addPrimaryKey tableName="combo_item" columnNames="id_combo,id_item"
+                       constraintName="PK_COMBO_ITEM" validate="true" />
+    </changeSet>
+</databaseChangeLog>

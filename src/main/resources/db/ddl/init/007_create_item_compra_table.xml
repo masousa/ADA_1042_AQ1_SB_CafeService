@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet id="init_create_table_item_compra" author="matheus">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="item_compra" />
+            </not>
+        </preConditions>
+
+        <createTable tableName="item_compra">
+            <column name="id_item" type="int2">
+                <constraints nullable="true"
+                             foreignKeyName="fk_item_compra_item" referencedTableName="item"
+                             referencedColumnNames="id" />
+            </column>
+            <column name="id_combo" type="int2" >
+                <constraints  nullable="true"
+                             foreignKeyName="fk_item_compra_combo" referencedTableName="combo"
+                             referencedColumnNames="id" />
+
+            </column>
+            <column name="id_compra" type="int2" >
+                <constraints  nullable="false"
+                             foreignKeyName="fk_item_compra_compra" referencedTableName="compra"
+                             referencedColumnNames="id" />
+
+            </column>
+
+
+            <column name="quantidade" type="int2" defaultValue="1">
+                <constraints nullable="false"  />
+            </column>
+
+            <column name="desconto" type="decimal(18,2)">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="valor_bruto" type="decimal(18,2)">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="total" type="decimal(18,2)">
+                <constraints nullable="false" />
+            </column>
+
+        </createTable>
+    </changeSet>
+    <!--
+    <changeSet id="init_create_constraint_item_compra_composite_pk" author="matheus">
+        <addPrimaryKey tableName="item_compra" columnNames="id_compra,id_item,id_combo"
+                       constraintName="PK_ITEM_COMPRA" validate="true" />
+    </changeSet>
+    -->
+</databaseChangeLog>
