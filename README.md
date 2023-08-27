@@ -22,3 +22,14 @@ Esse sistema deverá permitir o cadastro de compradores de café, bem como de pl
      final do combo é considerado como um item.
      - Ao término de cada compra, uma notificação deverá ser enviada ao usuário, sinalizando a compra
      realizada.
+
+
+## Visão atual do sistema
+O sistema apresenta essas configurações
+### Funcionalidades
+
+![CasodeUso](imagens/CafeService-usecase.png)
+
+### Modelo de domínio
+
+![DER](imagens/CafeService-DER.png)
