@@ -24,4 +24,6 @@ public class Compra {
     @JoinColumn(name = "cliente_id")
     private Usuario cliente;
 
+    private StatusCompra status;
+
 }

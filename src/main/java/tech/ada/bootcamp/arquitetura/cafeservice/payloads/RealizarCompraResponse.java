@@ -11,4 +11,8 @@ public class RealizarCompraResponse {
     private double total;
 
     private List<ItemCompraResponse> items;
+
+    private String status;
+
+    private FormaPagamentoResponse pagamento;
 }

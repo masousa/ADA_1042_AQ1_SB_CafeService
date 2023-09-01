@@ -15,5 +15,8 @@ curl -X 'POST' \
       "combo": false
     }
   ],
+  "formaPagamento": {
+    "tipoPagamento": "PIX"
+  },
   "identificador_cliente": "00000000000"
 }'
