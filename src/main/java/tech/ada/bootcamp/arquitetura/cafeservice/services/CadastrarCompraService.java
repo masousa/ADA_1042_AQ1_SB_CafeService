@@ -3,11 +3,9 @@ package tech.ada.bootcamp.arquitetura.cafeservice.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import tech.ada.bootcamp.arquitetura.cafeservice.exceptions.NotFoundException;
+import tech.ada.bootcamp.arquitetura.cafeservice.factory.RealizarPagamentoFactory;
 import tech.ada.bootcamp.arquitetura.cafeservice.model.*;
-import tech.ada.bootcamp.arquitetura.cafeservice.payloads.ItemCompraRequest;
-import tech.ada.bootcamp.arquitetura.cafeservice.payloads.ItemCompraResponse;
-import tech.ada.bootcamp.arquitetura.cafeservice.payloads.RealizarCompraRequest;
-import tech.ada.bootcamp.arquitetura.cafeservice.payloads.RealizarCompraResponse;
+import tech.ada.bootcamp.arquitetura.cafeservice.payloads.*;
 import tech.ada.bootcamp.arquitetura.cafeservice.repository.ComboRepository;
 import tech.ada.bootcamp.arquitetura.cafeservice.repository.CompraRepository;
 import tech.ada.bootcamp.arquitetura.cafeservice.repository.ItemCompraRepository;
@@ -27,6 +25,7 @@ public class CadastrarCompraService {
     private final ComboRepository comboRepository;
     private final ItemRepository itemRepository;
     private final ItemCompraRepository itemCompraRepository;
+    private final RealizarPagamentoFactory realizarPagamentoFactory;
 
     public RealizarCompraResponse cadastrarCompra(RealizarCompraRequest realizarCompraRequest){
         Compra compra = new Compra();
@@ -36,10 +35,17 @@ public class CadastrarCompraService {
                 (realizarCompraRequest.getItems(),compra, compra.getCliente().getPlano());
         compra.setValorTotal(itensCompra.stream().mapToDouble(ItemCompra::getTotal).sum());
         compra.setTotalDescontos(itensCompra.stream().mapToDouble(ItemCompra::getDesconto).sum());
+        FormaPagamentoResponse formaPagamentoResponse = realizarPagamentoFactory
+                .getFormaPagamento(realizarCompraRequest.getFormaPagamento().getTipoPagamento())
+                .realizarPagamento(compra);
         Compra compraSaved = compraRepository.save(compra);
         itensCompra.forEach(itemCompra -> itemCompra.setCompra(compraSaved));
         List<ItemCompra> itemComprasSaved = itemCompraRepository.saveAll(itensCompra);
-        return formatarResposta(compraSaved, itemComprasSaved);
+
+        RealizarCompraResponse response =  formatarResposta(compraSaved, itemComprasSaved);
+        response.setPagamento(formaPagamentoResponse);
+
+        return response;
     }
 
     private RealizarCompraResponse formatarResposta(Compra compraSaved, List<ItemCompra> itemComprasSaved) {
@@ -47,6 +53,7 @@ public class CadastrarCompraService {
         realizarCompraResponse.setDataCompra(compraSaved.getDataCompra().toLocalDate());
         realizarCompraResponse.setTotal(compraSaved.getValorTotal());
         realizarCompraResponse.setItems(formatarRespostaItens(itemComprasSaved));
+        realizarCompraResponse.setStatus(compraSaved.getStatus().getLabel());
         return realizarCompraResponse;
     }
 

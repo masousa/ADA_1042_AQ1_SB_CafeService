@@ -2,7 +2,6 @@ package tech.ada.bootcamp.arquitetura.cafeservice.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import tech.ada.bootcamp.arquitetura.cafeservice.model.Compra;
 import tech.ada.bootcamp.arquitetura.cafeservice.payloads.RealizarCompraRequest;
 import tech.ada.bootcamp.arquitetura.cafeservice.payloads.RealizarCompraResponse;
 import tech.ada.bootcamp.arquitetura.cafeservice.services.CadastrarCompraService;
